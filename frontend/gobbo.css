@@ -1,0 +1,29 @@
+html {
+    line-height: 1.2em;
+    font-family: 'Marker Felt', 'Comic Sans MS', cursive;
+    color: #111;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    padding: .125em;
+}
+
+.pencil-box {
+    border: .125em solid #111;
+    margin: .125em;
+    padding: .125em;
+}
+
+#title-block {
+    text-align: center;
+    border-radius: 1em 1em 0 0;
+}
+
+#results-block {
+    border-radius: 0 0 1em 1em;
+}
