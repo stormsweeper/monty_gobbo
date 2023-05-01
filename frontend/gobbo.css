@@ -1,7 +1,5 @@
-html {
-    line-height: 1.2em;
-    font-family: 'Marker Felt', 'Comic Sans MS', cursive;
-    color: #111;
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -9,21 +7,85 @@ body {
     margin: 0;
 }
 
+input,
+select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    background-color: inherit;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* layout */
+html {
+    font-size: 1.25em;
+    line-height: 1.25em;
+    font-family: system-ui, sans-serif;
+    color: #116;
+}
+
 main {
     padding: .125em;
 }
 
-.pencil-box {
-    border: .125em solid #111;
+.mimeo-box {
+    border: .125em solid #116;
     margin: .125em;
-    padding: .125em;
+    padding: .25em;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #title-block {
     text-align: center;
-    border-radius: 1em 1em 0 0;
 }
 
-#results-block {
-    border-radius: 0 0 1em 1em;
+h1 {
+    font-size: 1.5em;
+}
+
+
+/* stat blocks */
+.stat-block {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#fighter-name-block {
+    width: 100%;
+}
+
+.stat-cell {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: .125em;
+}
+
+#fighter-name-cell {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.stat-box {
+    color: #111;
+    font-family: 'Marker Felt', 'Comic Sans MS', cursive;
+    text-align: center;
+    min-width: 2em;
+}
+
+#fighter-name-cell>.stat-box {
+    text-align: left;
+}
+
+.stat-label {
+    font-weight: bolder;
 }

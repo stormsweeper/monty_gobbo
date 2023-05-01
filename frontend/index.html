@@ -10,20 +10,217 @@
 
 <body>
     <main>
-        <header class="pencil-box" id="title-block">
+        <header class="mimeo-box" id="title-block">
             <h1>Dungeon Survivability Calculator</h1>
         </header>
-        <section id="fighter-block" class="pencil-box">
+        <section id="fighter-block" class="mimeo-box">
+            <div class="stat-block" id="fighter-name-block">
+                <span class="stat-cell" id="fighter-name-cell">
+                    <label class="stat-label">Name</label>
+                    <span class="stat-box mimeo-box">
+                        <input id="fighter-name" value="" placeholder="Fighter Name">
+                    </span>
+                </span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-str">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Str</span>
+                </span>
+                <span class="stat-cell" id="stat-fighter-int">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-int">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Int</span>
+                </span>
+                <span class="stat-cell" id="stat-fighter-wis">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-wis">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Wis</span>
+                </span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-cell" id="stat-fighter-dex">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-dex">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Dex</span>
+                </span>
+                <span class="stat-cell" id="stat-fighter-con">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-con">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Con</span>
+                </span>
+                <span class="stat-cell" id="stat-fighter-cha">
+                    <span class="stat-box mimeo-box">
+                        <select id="rating-fighter-cha">
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Cha</span>
+                </span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <select>
+                            <option selected>1</option>
+                            <option selected>2</option>
+                            <option selected>3</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Lvl</span>
+                </span>
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <span id="rating-fighter-hp">8</span>
+                    </span>
+                    <span class="stat-label">HP</span>
+                </span>
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <span id="rating-fighter-ac">10</span>
+                    </span>
+                    <span class="stat-label">AC</span>
+                </span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <select id="fighter-armor">
+                            <option selected>No Armor</option>
+                            <option selected>Padded</option>
+                            <option selected>Leather</option>
+                            <option selected>Chain Mail</option>
+                            <option selected>Plated Mail</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Armor</span>
+                </span>
+                <span class="stat-cell">
+                    <span class="stat-box mimeo-box">
+                        <select id="fighter-weapon">
+                            <option selected>No Weapon</option>
+                            <option selected>Dagger</option>
+                            <option selected>Sword</option>
+                        </select>
+                    </span>
+                    <span class="stat-label">Weapon</span>
+                </span>
+            </div>
+        </section>
+        <section id="opp-block" class="mimeo-box">
 
         </section>
-        <section id="opp-block" class="pencil-box">
-
-        </section>
-        <section id="results-block" class="pencil-box">
-
+        <section id="results-block" class="mimeo-box">
+            <span id="survivability-calc">42%</span> of surviving.
         </section>
     </main>
-    <script type="text/javascript" src="gobbo.js" />
+    <script type="text/javascript" src="gobbo.js"></script>
 </body>
 
 </html>
