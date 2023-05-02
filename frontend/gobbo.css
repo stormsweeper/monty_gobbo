@@ -7,20 +7,33 @@ body {
     margin: 0;
 }
 
-input,
+form,
+input[type="number"],
+input[type="text"],
 select {
+    display: inline-block;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     text-align: inherit;
     background-color: inherit;
+    color: inherit;
     border: 0;
     border-radius: 0;
     margin: 0;
     padding: 0;
     appearance: none;
+    cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    -moz-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 /* layout */
@@ -65,7 +78,6 @@ h1 {
 .stat-cell {
     display: flex;
     flex-direction: column;
-    text-align: center;
     padding: .125em;
 }
 
@@ -78,14 +90,14 @@ h1 {
 .stat-box {
     color: #111;
     font-family: 'Marker Felt', 'Comic Sans MS', cursive;
-    text-align: center;
     min-width: 2em;
 }
 
-#fighter-name-cell>.stat-box {
-    text-align: left;
+.stat-box>input[type="number"] {
+    width: 1.25em;
 }
 
 .stat-label {
     font-weight: bolder;
+    text-align: center;
 }
