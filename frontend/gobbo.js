@@ -56,4 +56,12 @@
         el("rating-fighter-ac").innerText = fighter.ac;
         console.log(fighter);
     }
+
+    el("start-button").onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        el("start-button").disabled = true;
+        setTimeout(() => { el("start-button").disabled = false; }, 250);
+    }
 })();

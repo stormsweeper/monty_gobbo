@@ -8,6 +8,7 @@ body {
 }
 
 form,
+button,
 input[type="number"],
 input[type="text"],
 select {
@@ -90,7 +91,7 @@ h1 {
 .stat-box {
     color: #111;
     font-family: 'Marker Felt', 'Comic Sans MS', cursive;
-    min-width: 2em;
+    min-width: 2.25em;
 }
 
 .stat-box>input[type="number"] {
@@ -100,4 +101,16 @@ h1 {
 .stat-label {
     font-weight: bolder;
     text-align: center;
+}
+
+#start-button {
+    padding: .125em .5em;
+    margin: 0 .125em;
+    border-radius: .125em;
+    background-color: #116;
+    color: white;
+}
+
+#start-button:disabled {
+    opacity: .5;
 }

@@ -227,10 +227,106 @@
                 </div>
             </section>
             <section id="opp-block" class="mimeo-box">
-
+                <div class="stat-block">
+                    <span class="stat-cell">
+                        <span class="stat-label">Opponent</span>
+                    </span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" size="2" id="opp-wave-size" pattern="[0-9]*" value="5">
+                        </span>
+                        <span class="stat-label">Num</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" size="2" id="opp-wave-count" pattern="[0-9]*" value="20">
+                        </span>
+                        <span class="stat-label">Wvs</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <select id="opp-hit-dice">
+                                <option value="0">&lt; 1</option>
+                                <option selected>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                <option>13</option>
+                                <option>14</option>
+                                <option>15</option>
+                                <option>16</option>
+                                <option>17+</option>
+                            </select>
+                        </span>
+                        <span class="stat-label">HD</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" size="2" id="opp-hp" pattern="[0-9]*" value="3">
+                        </span>
+                        <span class="stat-label">HP</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <select id="opp-ac">
+                                <option>9</option>
+                                <option>8</option>
+                                <option>7</option>
+                                <option selected>6</option>
+                                <option>5</option>
+                                <option>4</option>
+                                <option>3</option>
+                                <option>2</option>
+                                <option>1</option>
+                                <option>0</option>
+                                <option>-1</option>
+                                <option>-2</option>
+                                <option>-3</option>
+                            </select>
+                        </span>
+                        <span class="stat-label">AC</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" size="2" id="opp-morale" pattern="[0-9]*" value="7">
+                        </span>
+                        <span class="stat-label">Mor</span>
+                    </span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <select id="opp-weapon">
+                                <option value="torch">Torch</option>
+                                <option value="dagger">Dagger</option>
+                                <option value="club">Club</option>
+                                <option value="hand-axe">Hand Axe</option>
+                                <option value="mace">Mace</option>
+                                <option value="short-sword">Short Sword</option>
+                                <option value="spear" selected>Spear</option>
+                                <option value="war-hammer">War Hammer</option>
+                                <option value="battle-axe">Battle Axe</option>
+                                <option value="sword">Sword</option>
+                                <option value="pole-arm">Pole Arm</option>
+                                <option value="two-handed-sword">Two-handed Sword</option>
+                            </select>
+                        </span>
+                        <span class="stat-label">Weapon</span>
+                    </span>
+                </div>
             </section>
             <section id="results-block" class="mimeo-box">
-                <!-- <button>&#x1F3B2</button> -->
+                <button type="button" id="start-button">Fight!</button>
                 <span id="survivability-calc">42%</span> of surviving.
             </section>
         </form>
