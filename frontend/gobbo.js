@@ -58,6 +58,9 @@
         armor: "plate-and-shield",
         weapon: "sword",
         name: "",
+        str_mod: 0,
+        dmg_die: 0,
+        twohanded_weapon: false,
     };
 
     const opponent = {
@@ -67,13 +70,23 @@
         hp: 3,
         ac: 6,
         morale: 7,
-        "weapon": "spear",
+        weapon: "spear",
+        first_morale_check: 0,
+        second_morale_check: 0,
+        to_hit_mod: 0,
+        dmg_die: 0,
+        twohanded_weapon: false,
     };
 
     const update_fighter = () => {
         for (const s of ["str", "int", "wis", "dex", "con", "cha", "lvl", "hp"]) fighter[s] = numval(`rating-fighter-${s}`);
 
         for (const s of ["armor", "weapon", "name"]) fighter[s] = strval(`fighter-${s}`);
+
+        fighter.str_mod = stat_mod(fighter.str);
+        const weapon = weapons[fighter.weapon];
+        fighter.dmg_die = weapon.die;
+        fighter.twohanded_weapon = weapon.twohanded;
 
         fighter.ac = armors[fighter.armor] - stat_mod(fighter.dex);
         if (fighter.ac > 9) fighter.ac = 9;
@@ -85,6 +98,19 @@
     const update_opponent = () => {
         for (const s of ["wave-size", "wave-count", "hit-dice", "hp", "ac", "morale"]) opponent[s] = numval(`opp-${s}`);
         for (const s of ["weapon"]) opponent[s] = strval(`opp-${s}`);
+        opponent.first_morale_check = opponent["wave-size"] - 1;
+        opponent.second_morale_check = Math.floor(opponent["wave-size"] / 2);
+        if (opponent["hit-dice"] <= 7) {
+            opponent.to_hit_mod = opponent["hit-dice"];
+        }
+        else if (opponent["hit-dice"] < 17) {
+            opponent.to_hit_mod = 6 + Math.ceil((opponent["hit-dice"] - 6) / 2);
+        } else {
+            opponent.to_hit_mod = 12;
+        }
+        const weapon = weapons[opponent.weapon]
+        opponent.dmg_die = weapon.die;
+        opponent.twohanded_weapon = weapon.twohanded;
         console.log(opponent);
     }
 
@@ -100,14 +126,10 @@
         let result = "tied";
         if (ftr > opp) result = "fighter";
         if (opp > ftr) result = "opponent";
-        if (weapons[fighter.weapon].twohanded && !weapons[opponent.weapon].twohanded) result = "opponent";
-        if (weapons[opponent.weapon].twohanded && !weapons[fighter.weapon].twohanded) result = "fighter";
+        if (fighter.twohanded_weapon && !opponent.twohanded_weapon) result = "opponent";
+        if (!fighter.twohanded_weapon && opponent.twohanded_weapon) result = "fighter";
         return result;
     }
-
-    const weapon_damage = (weapon, mod) => {
-        return Math.max(1, die_roll(weapons[weapon].die) + mod);
-    };
 
     const fighter_dmg = () => {
         let roll = die_roll(20);
@@ -118,7 +140,7 @@
         }
         // hard coded to lvl 1-3 hit chance
         if (roll < 20) {
-            let target = 10 + (9 - opponent.ac) - stat_mod(fighter.str);
+            let target = 10 + (9 - opponent.ac) - fighter.str_mod;
             console.log(`fighter needs >= ${target}`);
             if (roll < target) {
                 console.log("fighter missed (rolled too low)");
@@ -126,13 +148,8 @@
             }
         }
         console.log("fighter hits");
-        return weapon_damage(fighter.weapon, stat_mod(fighter.str));
+        return Math.max(1, die_roll(fighter.dmg_die) + fighter.str_mod);
     };
-
-    const opponent_hit_mod = () => {
-        if (opponent["hit-dice"] <= 7) return opponent["hit-dice"];
-        return 6 + Math.ceil((opponent["hit-dice"] - 6) / 2);
-    }
 
     const opponent_dmg = () => {
         let roll = die_roll(20);
@@ -143,7 +160,7 @@
         }
         // hard coded to lvl 1-3 hit chance
         if (roll < 20) {
-            let target = 10 + (9 - fighter.ac) - opponent_hit_mod();
+            let target = 10 + (9 - fighter.ac) - opponent.to_hit_mod;
             target = Math.max(2, target);
             console.log(`opponent needs >= ${target}`);
             if (roll < target) {
@@ -152,7 +169,7 @@
             }
         }
         console.log("opponent hits");
-        return weapon_damage(fighter.weapon, stat_mod(fighter.str));
+        return die_roll(opponent.dmg_die);
     };
 
     const take_fighter_turn = (wave_stats, wave_vars, trial_vars) => {
@@ -170,7 +187,7 @@
                 wave_stats.opponents_killed++;
 
                 // if 1st down, check morale
-                if (wave_vars.current_wave_size === opponent["wave-size"] - 1) {
+                if (wave_vars.current_wave_size === opponent.first_morale_check) {
                     if (fails_morale(opponent.morale)) {
                         console.log("opponents failed first morale check");
                         wave_stats.failed_morale_first++;
@@ -180,7 +197,7 @@
                     }
                 }
                 // if half down, check morale
-                else if (wave_vars.current_wave_size === Math.floor(opponent["wave-size"] / 2)) {
+                else if (wave_vars.current_wave_size === opponent.second_morale_check) {
                     if (fails_morale(opponent.morale - 1)) {
                         console.log("opponents failed second morale check");
                         wave_stats.failed_morale_second++;
@@ -216,9 +233,10 @@
 
     const display_results = (stats) => {
         console.log(stats);
-        const spct = (stats.trials - stats.fighter_deaths) / stats.trials * 100;
+        const spct = (stats.trials - stats.fighter_deaths) / stats.trials;
         const fmt = Intl.NumberFormat();
-        el("survivability-desc").innerText = `In ${fmt.format(stats.trials)} trials, our fighter died ${fmt.format(stats.fighter_deaths)} times, for a survival rate of ${fmt.format(spct.toFixed(2))}%`;
+        const pct_fmt = Intl.NumberFormat(undefined, { style: "percent", maximumFractionDigits: 2 });
+        el("survivability-desc").innerText = `In ${fmt.format(stats.trials)} trials, our fighter died ${fmt.format(stats.fighter_deaths)} times, for a survival rate of ${pct_fmt.format(spct)}`;
     };
 
 
