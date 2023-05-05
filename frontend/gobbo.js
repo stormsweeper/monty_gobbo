@@ -242,6 +242,10 @@
 
     // the actual sim
     const monty_gobbo_time = () => {
+        el("start-button").disabled = true;
+        el("survivability-desc").innerText = "";
+        update_fighter();
+        update_opponent();
         console.log("starting sim");
         const trials = numval("opp-trial-count");
 
@@ -351,6 +355,7 @@
 
         // display stats
         display_results(total_stats);
+        el("start-button").disabled = false;
     };
 
     // set up listeners and other one-time stuff
@@ -363,14 +368,6 @@
     el("start-button").onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        el("start-button").disabled = true;
-        el("survivability-desc").innerText = "";
-
-        update_fighter();
-        update_opponent();
         monty_gobbo_time();
-
-        el("start-button").disabled = false;
     }
 })();
