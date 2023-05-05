@@ -178,7 +178,7 @@
                     </span>
                     <span class="stat-cell">
                         <span class="stat-box mimeo-box">
-                            <input type="number" size="2" id="rating-fighter-hp" pattern="[0-9]*" value="8">
+                            <input type="number" id="rating-fighter-hp" pattern="[0-9]*" value="8">
                         </span>
                         <span class="stat-label">HP</span>
                     </span>
@@ -232,19 +232,27 @@
                         <span class="stat-label">Opponent</span>
                     </span>
                 </div>
+                <div class="stat-block" id="wave-stats">
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" id="opp-trial-count" pattern="[0-9]*" value="10000">
+                        </span>
+                        <span class="stat-label">Trials</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" id="opp-wave-size" pattern="[0-9]*" value="5">
+                        </span>
+                        <span class="stat-label">#/Wave</span>
+                    </span>
+                    <span class="stat-cell">
+                        <span class="stat-box mimeo-box">
+                            <input type="number" id="opp-wave-count" pattern="[0-9]*" value="20">
+                        </span>
+                        <span class="stat-label">Waves</span>
+                    </span>
+                </div>
                 <div class="stat-block">
-                    <span class="stat-cell">
-                        <span class="stat-box mimeo-box">
-                            <input type="number" size="2" id="opp-wave-size" pattern="[0-9]*" value="5">
-                        </span>
-                        <span class="stat-label">Num</span>
-                    </span>
-                    <span class="stat-cell">
-                        <span class="stat-box mimeo-box">
-                            <input type="number" size="2" id="opp-wave-count" pattern="[0-9]*" value="20">
-                        </span>
-                        <span class="stat-label">Wvs</span>
-                    </span>
                     <span class="stat-cell">
                         <span class="stat-box mimeo-box">
                             <select id="opp-hit-dice">
@@ -272,7 +280,7 @@
                     </span>
                     <span class="stat-cell">
                         <span class="stat-box mimeo-box">
-                            <input type="number" size="2" id="opp-hp" pattern="[0-9]*" value="3">
+                            <input type="number" id="opp-hp" pattern="[0-9]*" value="3">
                         </span>
                         <span class="stat-label">HP</span>
                     </span>
@@ -298,7 +306,7 @@
                     </span>
                     <span class="stat-cell">
                         <span class="stat-box mimeo-box">
-                            <input type="number" size="2" id="opp-morale" pattern="[0-9]*" value="7">
+                            <input type="number" id="opp-morale" pattern="[0-9]*" value="7">
                         </span>
                         <span class="stat-label">Mor</span>
                     </span>

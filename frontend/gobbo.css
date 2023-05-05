@@ -98,6 +98,10 @@ h1 {
     width: 1.25em;
 }
 
+#wave-stats .stat-box>input[type="number"] {
+    width: 3em;
+}
+
 .stat-label {
     font-weight: bolder;
     text-align: center;

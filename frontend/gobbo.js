@@ -88,7 +88,11 @@
         console.log(opponent);
     }
 
-    const fails_morale = (mor) => die_roll(6) + die_roll(6) > mor;
+    const fails_morale = (mor) => {
+        let roll = die_roll(6) + die_roll(6);
+        console.log(`opponents rolled ${roll} vs their morale of ${mor}`);
+        return roll > mor;
+    };
 
     const roll_init = () => {
         let ftr = die_roll(6);
@@ -154,7 +158,7 @@
     const take_fighter_turn = (wave_stats, wave_vars, trial_vars) => {
         // do fighter dmg
         let dmg = fighter_dmg();
-        console.log(`fighter did ${dmg}`);
+        console.log(`fighter did ${dmg} damage`);
         if (dmg > 0) {
             wave_stats.fighter_hits++;
             wave_stats.fighter_dmg += dmg;
@@ -200,12 +204,12 @@
         for (let o = 1; o <= wave_vars.current_wave_size; o++) {
             opp_dmg = opponent_dmg();
             if (opp_dmg > 0) {
-                console.log(`opponent did ${opp_dmg}`);
+                console.log(`opponent did ${opp_dmg} damage`);
                 wave_stats.opponent_hits++;
                 total_opp_dmg += opp_dmg;
             }
         }
-        console.log(`opponents did ${total_opp_dmg} total`);
+        console.log(`opponents did ${total_opp_dmg} damage total`);
         wave_stats.opponent_dmg += total_opp_dmg;
         trial_vars.current_fighter_hp -= total_opp_dmg;
     };
@@ -221,7 +225,7 @@
     // the actual sim
     const monty_gobbo_time = () => {
         console.log("starting sim");
-        const trials = 10000;
+        const trials = numval("opp-trial-count");
 
         let total_stats = {
             trials: trials,
