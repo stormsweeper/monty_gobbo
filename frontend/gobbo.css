@@ -98,13 +98,19 @@ h1 {
     width: 1.25em;
 }
 
-#wave-stats .stat-box>input[type="number"] {
-    width: 3em;
+#opp-trial-count {
+    width: 4em;
+}
+
+#opp-wave-size,
+#opp-wave-count {
+    width: 2.5em;
 }
 
 .stat-label {
     font-weight: bolder;
     text-align: center;
+    font-size: .875em;
 }
 
 #start-button {
