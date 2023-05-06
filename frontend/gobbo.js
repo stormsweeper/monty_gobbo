@@ -1,7 +1,16 @@
 (() => {
+    const fmt_num = Intl.NumberFormat();
+    const fmt_pct = Intl.NumberFormat(undefined, { style: "percent", maximumFractionDigits: 2 });
     const el = (id) => document.getElementById(id);
     const strval = (id) => el(id).value;
     const numval = (id) => parseInt(strval(id));
+    let is_simming = false;
+
+    let info_log_enabled = false;
+    const info_log = (msg) => {
+        if (!info_log_enabled) return;
+        console.log(msg);
+    }
 
     // random int between 1 and max (inclusive)
     // Math.random is >= 0, but always < 1, so this is needed
@@ -92,7 +101,7 @@
         if (fighter.ac > 9) fighter.ac = 9;
 
         el("rating-fighter-ac").innerText = fighter.ac;
-        console.log(fighter);
+        info_log(fighter);
     }
 
     const update_opponent = () => {
@@ -111,104 +120,105 @@
         const weapon = weapons[opponent.weapon]
         opponent.dmg_die = weapon.die;
         opponent.twohanded_weapon = weapon.twohanded;
-        console.log(opponent);
+        info_log(opponent);
     }
 
-    const fails_morale = (mor) => {
-        let roll = die_roll(6) + die_roll(6);
-        console.log(`opponents rolled ${roll} vs their morale of ${mor}`);
-        return roll > mor;
+    const fails_morale = (morale) => {
+        const roll = die_roll(6) + die_roll(6);
+        info_log(`opponents rolled ${roll} vs their morale of ${morale}`);
+        return roll > morale;
     };
 
     const roll_init = () => {
-        let ftr = die_roll(6);
-        let opp = die_roll(6);
+        const ftr_init = die_roll(6);
+        const opp_init = die_roll(6);
+        info_log(`initiative: fighter ${ftr_init} vs opponent ${opp_init}`);
         let result = "tied";
-        if (ftr > opp) result = "fighter";
-        if (opp > ftr) result = "opponent";
+        if (ftr_init > opp_init) result = "fighter";
+        if (opp_init > ftr_init) result = "opponent";
         if (fighter.twohanded_weapon && !opponent.twohanded_weapon) result = "opponent";
         if (!fighter.twohanded_weapon && opponent.twohanded_weapon) result = "fighter";
         return result;
     }
 
     const fighter_dmg = () => {
-        let roll = die_roll(20);
-        console.log(`fighter rolled ${roll} to hit`);
-        if (roll === 1) {
-            console.log("fighter missed (rolled a 1)");
+        const to_hit_roll = die_roll(20);
+        info_log(`fighter rolled ${to_hit_roll} to hit`);
+        if (to_hit_roll === 1) {
+            info_log("fighter missed (rolled a 1)");
             return 0;
         }
         // hard coded to lvl 1-3 hit chance
-        if (roll < 20) {
-            let target = 10 + (9 - opponent.ac) - fighter.str_mod;
-            console.log(`fighter needs >= ${target}`);
-            if (roll < target) {
-                console.log("fighter missed (rolled too low)");
+        if (to_hit_roll < 20) {
+            const target = 10 + (9 - opponent.ac) - fighter.str_mod;
+            info_log(`fighter needs >= ${target}`);
+            if (to_hit_roll < target) {
+                info_log("fighter missed (rolled too low)");
                 return 0;
             }
         }
-        console.log("fighter hits");
+        info_log("fighter hits");
         return Math.max(1, die_roll(fighter.dmg_die) + fighter.str_mod);
     };
 
     const opponent_dmg = () => {
-        let roll = die_roll(20);
-        console.log(`opponent rolled ${roll} to hit`);
-        if (roll === 1) {
-            console.log("opponent missed (rolled a 1)");
+        const to_hit_roll = die_roll(20);
+        info_log(`opponent rolled ${to_hit_roll} to hit`);
+        if (to_hit_roll === 1) {
+            info_log("opponent missed (rolled a 1)");
             return 0;
         }
         // hard coded to lvl 1-3 hit chance
-        if (roll < 20) {
+        if (to_hit_roll < 20) {
             let target = 10 + (9 - fighter.ac) - opponent.to_hit_mod;
             target = Math.max(2, target);
-            console.log(`opponent needs >= ${target}`);
-            if (roll < target) {
-                console.log("opponent missed (rolled too low)");
+            info_log(`opponent needs >= ${target}`);
+            if (to_hit_roll < target) {
+                info_log("opponent missed (rolled too low)");
                 return 0;
             }
         }
-        console.log("opponent hits");
+        info_log("opponent hits");
         return die_roll(opponent.dmg_die);
     };
 
     const take_fighter_turn = (wave_stats, wave_vars, trial_vars) => {
         // do fighter dmg
-        let dmg = fighter_dmg();
-        console.log(`fighter did ${dmg} damage`);
+        const dmg = fighter_dmg();
+        info_log(`fighter did ${dmg} damage`);
         if (dmg > 0) {
             wave_stats.fighter_hits++;
             wave_stats.fighter_dmg += dmg;
             wave_vars.current_opp_hp -= dmg;
             // reduce wave size?
             if (wave_vars.current_opp_hp <= 0) {
-                console.log("fighter kills an opponent");
+                info_log("fighter kills an opponent");
                 wave_vars.current_wave_size--;
                 wave_stats.opponents_killed++;
 
                 // if 1st down, check morale
                 if (wave_vars.current_wave_size === opponent.first_morale_check) {
                     if (fails_morale(opponent.morale)) {
-                        console.log("opponents failed first morale check");
+                        info_log("opponents failed first morale check");
                         wave_stats.failed_morale_first++;
                         wave_vars.current_wave_size = 0;
                     } else {
-                        console.log("opponents passed first morale check");
+                        info_log("opponents passed first morale check");
                     }
                 }
                 // if half down, check morale
                 else if (wave_vars.current_wave_size === opponent.second_morale_check) {
                     if (fails_morale(opponent.morale - 1)) {
-                        console.log("opponents failed second morale check");
+                        info_log("opponents failed second morale check");
                         wave_stats.failed_morale_second++;
                         wave_vars.current_wave_size = 0;
                     } else {
-                        console.log("opponents passed second morale check");
+                        info_log("opponents passed second morale check");
                     }
                 }
                 // else, next opponent steps up
                 else if (wave_vars.current_wave_size > 0) {
-                    console.log("next opponent steps forward");
+                    info_log("next opponent steps forward");
                     wave_vars.current_opp_hp = opponent.hp;
                 }
             }
@@ -221,35 +231,31 @@
         for (let o = 1; o <= wave_vars.current_wave_size; o++) {
             opp_dmg = opponent_dmg();
             if (opp_dmg > 0) {
-                console.log(`opponent did ${opp_dmg} damage`);
+                info_log(`opponent did ${opp_dmg} damage`);
                 wave_stats.opponent_hits++;
                 total_opp_dmg += opp_dmg;
             }
         }
-        console.log(`opponents did ${total_opp_dmg} damage total`);
+        info_log(`opponents did ${total_opp_dmg} damage total`);
         wave_stats.opponent_dmg += total_opp_dmg;
         trial_vars.current_fighter_hp -= total_opp_dmg;
     };
 
     const display_results = (stats) => {
-        console.log(stats);
+        info_log(stats);
         const spct = (stats.trials - stats.fighter_deaths) / stats.trials;
-        const fmt = Intl.NumberFormat();
-        const pct_fmt = Intl.NumberFormat(undefined, { style: "percent", maximumFractionDigits: 2 });
-        el("survivability-desc").innerText = `In ${fmt.format(stats.trials)} trials, our fighter died ${fmt.format(stats.fighter_deaths)} times, for a survival rate of ${pct_fmt.format(spct)}`;
+        el("survivability-desc").innerText = `In ${fmt_num.format(stats.trials)} trials, our fighter died ${fmt_num.format(stats.fighter_deaths)} times, for a survival rate of ${fmt_pct.format(spct)}`;
     };
 
 
     // the actual sim
     const monty_gobbo_time = () => {
-        el("start-button").disabled = true;
-        el("survivability-desc").innerText = "";
         update_fighter();
         update_opponent();
-        console.log("starting sim");
+        info_log("starting sim");
         const trials = numval("opp-trial-count");
 
-        let total_stats = {
+        const total_stats = {
             trials: trials,
             fighter_deaths: 0,
             waves_faced: 0,
@@ -265,9 +271,9 @@
 
         trial_loop: for (let current_trial = 1; current_trial <= trials; current_trial++) {
 
-            console.log(`starting trial # ${current_trial}`);
+            info_log(`starting trial # ${current_trial}`);
 
-            let trial_stats = {
+            const trial_stats = {
                 waves_faced: 0,
                 combat_rounds: 0,
                 opponents_killed: 0,
@@ -279,7 +285,7 @@
                 failed_morale_second: 0,
             };
 
-            let trial_vars = {
+            const trial_vars = {
                 current_fighter_hp: fighter.hp,
                 waves_remaining: opponent["wave-count"],
             };
@@ -288,9 +294,9 @@
                 // call up next wave
                 trial_stats.waves_faced++;
                 trial_vars.waves_remaining--;
-                console.log(`wave ${trial_stats.waves_faced} starting`);
+                info_log(`wave ${trial_stats.waves_faced} starting`);
 
-                let wave_stats = {
+                const wave_stats = {
                     combat_rounds: 0,
                     opponents_killed: 0,
                     fighter_hits: 0,
@@ -300,28 +306,28 @@
                     failed_morale_first: 0,
                     failed_morale_second: 0,
                 };
-                let wave_vars = {
+                const wave_vars = {
                     current_opp_hp: opponent.hp,
                     current_wave_size: opponent["wave-size"],
                 };
 
                 const init = roll_init();
-                console.log(`init result: ${init}`);
+                info_log(`init result: ${init}`);
                 while (wave_vars.current_wave_size > 0) {
                     wave_stats.combat_rounds++;
-                    console.log(`starting round ${wave_stats.combat_rounds} `);
+                    info_log(`starting round ${wave_stats.combat_rounds} `);
                     if (init === "fighter") {
-                        console.log("fighter attacks first");
+                        info_log("fighter attacks first");
                         take_fighter_turn(wave_stats, wave_vars, trial_vars);
                         if (wave_vars.current_wave_size > 0) take_opponent_turn(wave_stats, wave_vars, trial_vars);
                     }
                     else if (init === "opponent") {
-                        console.log("opponents attack first");
+                        info_log("opponents attack first");
                         take_opponent_turn(wave_stats, wave_vars, trial_vars);
                         if (trial_vars.current_fighter_hp > 0) take_fighter_turn(wave_stats, wave_vars, trial_vars);
                     }
                     else {
-                        console.log("simultaneous attacks");
+                        info_log("simultaneous attacks");
                         // results end up the same, but take_fighter_turn reduces current_wave_size
                         take_opponent_turn(wave_stats, wave_vars, trial_vars);
                         take_fighter_turn(wave_stats, wave_vars, trial_vars);
@@ -329,18 +335,18 @@
 
                     // if fighter dead, next trial
                     if (trial_vars.current_fighter_hp < 1) {
-                        console.log("fighter died");
+                        info_log("fighter died");
                         // update stats
-                        for (let s in wave_stats) trial_stats[s] += wave_stats[s];
+                        for (const s in wave_stats) trial_stats[s] += wave_stats[s];
                         total_stats.fighter_deaths++;
                         break wave_loop;
                     }
 
                     // if opponents dead, next wave
                     if (wave_vars.current_wave_size < 1) {
-                        console.log("opponents gone");
+                        info_log("opponents gone");
                         // update stats
-                        for (let s in wave_stats) trial_stats[s] += wave_stats[s];
+                        for (const s in wave_stats) trial_stats[s] += wave_stats[s];
                         // otherwise, next wave
                         continue wave_loop;
                     }
@@ -355,7 +361,6 @@
 
         // display stats
         display_results(total_stats);
-        el("start-button").disabled = false;
     };
 
     // set up listeners and other one-time stuff
@@ -363,11 +368,16 @@
     el("gobbo-form").onchange = () => {
         update_fighter();
         update_opponent();
-    }
+    };
 
     el("start-button").onclick = (e) => {
         e.preventDefault();
-        e.stopPropagation();
+        if (is_simming) return;
+        is_simming = true;
+        el("start-button").disabled = true;
+        el("survivability-desc").innerText = "simulating...";
         monty_gobbo_time();
-    }
+        el("start-button").disabled = false;
+        is_simming = false;
+    };
 })();
