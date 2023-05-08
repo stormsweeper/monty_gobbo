@@ -12,6 +12,18 @@
         console.log(msg);
     }
 
+
+    const disable_form = () => {
+        el("start-button").disabled = true;
+        el("survivability-desc").innerText = "simulating...";
+        el("gobbo-form").className = "disabled";
+    };
+
+    const enable_form = () => {
+        el("start-button").disabled = false;
+        el("gobbo-form").className = "";
+    };
+
     // random int between 1 and max (inclusive)
     // Math.random is >= 0, but always < 1, so this is needed
     const die_roll = (max) => Math.floor(Math.random() * max) + 1;
@@ -372,12 +384,14 @@
 
     el("start-button").onclick = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (is_simming) return;
         is_simming = true;
-        el("start-button").disabled = true;
-        el("survivability-desc").innerText = "simulating...";
-        monty_gobbo_time();
-        el("start-button").disabled = false;
-        is_simming = false;
+        disable_form();
+        window.setTimeout(() => {
+            monty_gobbo_time();
+            is_simming = false;
+            enable_form();
+        }, 1);
     };
 })();

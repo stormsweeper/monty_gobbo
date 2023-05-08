@@ -12,7 +12,6 @@ button,
 input[type="number"],
 input[type="text"],
 select {
-    display: inline-block;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
@@ -121,6 +120,11 @@ h1 {
     color: white;
 }
 
-#start-button:disabled {
-    opacity: .5;
+#gobbo-form.disabled {
+    opacity: .75;
+}
+
+#gobbo-form.disabled,
+#gobbo-form.disabled * {
+    cursor: wait !important;
 }
