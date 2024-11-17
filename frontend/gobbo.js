@@ -256,7 +256,7 @@
     const display_results = (stats) => {
         info_log(stats);
         const spct = (stats.trials - stats.fighter_deaths) / stats.trials;
-        el("survivability-desc").innerText = `In ${fmt_num.format(stats.trials)} trials, our fighter died ${fmt_num.format(stats.fighter_deaths)} times, for a survival rate of ${fmt_pct.format(spct)}`;
+        el("survivability-desc").innerText = `In ${fmt_num.format(stats.trials)} trials, ${fighter.name || "our fighter"} died ${fmt_num.format(stats.fighter_deaths)} times, for a survival rate of ${fmt_pct.format(spct)}`;
     };
 
 
